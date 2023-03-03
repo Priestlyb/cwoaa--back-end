@@ -1,11 +1,15 @@
 const express = require('express');
-const mongoose = require ('mongoose')
-const router = require("./routes/events-routes")
+const mongoose = require ('mongoose');
+const router = require("./routes/events-routes");
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
 const app = express();
 const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
+app.use("/api/users", userRoute);
+app.use("/api/auth", authRoute);
 app.use("/events", router) // localhost:5000/books
 
 
