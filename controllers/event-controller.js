@@ -30,11 +30,11 @@ const getById = async (req, res, next) => {
 };
 
 const addEvent = async (req, res, next) => {
-    const {event_img, event_desc} = req.body;
+    const {event_img, event_desc, extra_event_img, event_title, event_sub_title} = req.body;
     let event;
     try {
         event = new Event({
-            event_img, event_desc
+            event_img, event_desc, extra_event_img, event_title, event_sub_title
         })
         await event.save();
     } catch (err) {
@@ -49,11 +49,11 @@ const addEvent = async (req, res, next) => {
 
 const updateEvent =async (req, res, next) => {
     const id = req.params.id;
-    const { event_img, event_desc } = req.body;
+    const { event_img, event_desc, extra_event_img, event_title, event_sub_title } = req.body;
     let event;
     try {
         event = await Event.findByIdAndUpdate(id, {
-            event_img, event_desc
+            event_img, event_desc, extra_event_img, event_title, event_sub_title
         });
         event = await event.save()
     } catch (err) {
