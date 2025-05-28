@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Comment = require("../model/Comment");
+const Comment = require("../model/comment.js");
 const argon2 = require("argon2");
 
 // Create comment or reply
