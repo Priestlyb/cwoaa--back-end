@@ -1,23 +1,44 @@
-const express = require('express');
-const mongoose = require ('mongoose');
-const router = require("./routes/events-routes");
+const express = require("express");
+const mongoose = require("mongoose");
+const eventRoutes = require("./routes/eventRoutes");
 const authRoute = require("./routes/auth");
-const userRoute = require("./routes/users");
+const prayerRoutes = require("./routes/prayerRoutes");
+const NewsRoutes = require("./routes/newsRoute");
+const commentRoutes = require("./routes/commentRoute");
+const bookMassRoutes = require('./routes/bookMassRoute');
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
-app.use(express.json());
-app.use(cors());
-app.use("/api/users", userRoute);
-app.use("/api/auth", authRoute);
-app.use("/events", router) // localhost:5000/books
+mongoose.set("strictQuery", false);
+require("dotenv").config();
 
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // http://localhost:3000 https://thisispriestly.vercel.app
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use("/", prayerRoutes);
+app.use("/auth", authRoute);
+app.use("/", eventRoutes);
+app.use("/", commentRoutes);
+app.use("/", NewsRoutes);
+app.use('/', bookMassRoutes);
 
 /* Click connect at Database Deployments page */
-mongoose.connect(
-"mongodb+srv://mernApp:p%40ssw0rd%279%27%21@mernbookstore.iwzp06a.mongodb.net/?retryWrites=true&w=majority"
-        )
-        .then(()=>console.log("Connected to Datebase"))
-        .then(() => {
-            app.listen(process.env.PORT || 9000);
-        }).catch((err) =>console.log(err));
+const MONGO_URL = process.env.MONGO_URL;
+
+mongoose
+  .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to Database 9000");
+    app.listen(process.env.PORT || 9000, () => {
+      console.log("Server is running on port 9000");
+    });
+  })
+  .catch((err) => console.log(err));
