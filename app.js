@@ -16,7 +16,7 @@ require("dotenv").config();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://cwoaa.vercel.app/", // http://localhost:3000 
+    origin: "https://cwoaa.vercel.app", // http://localhost:3000 
     credentials: true,
   })
 );
